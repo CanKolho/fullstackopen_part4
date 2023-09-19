@@ -1,0 +1,49 @@
+GET http://localhost:3001/api/blogs
+
+###
+
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "JS Blog",
+  "author": "Code wizard" ,
+  "url": "www.codewizard.com",
+  "likes": 100
+}
+
+###
+
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Scala Blog",
+  "author": "Some student" ,
+  "url": "www.scala.com",
+  "likes": 50
+}
+
+###
+
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Python blog",
+  "author": "Another student" ,
+  "url": "www.python.com",
+  "likes": 500
+}
+
+###
+
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "SQL blog",
+  "author": "Database management" ,
+  "url": "www.sql.com",
+  "likes": 5000
+}
