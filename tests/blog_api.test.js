@@ -11,7 +11,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs)
 })
 
-describe('GET to api endpoint /api/blogs', () => {
+describe('HTTP GET to api endpoint /api/blogs', () => {
     test('blogs are returned as json', async () => {
       await api
         .get('/api/blogs')
@@ -34,7 +34,7 @@ describe('GET to api endpoint /api/blogs', () => {
     })
 })
   
-describe('POST to api endpoint /api/blogs', () => {
+describe('HTTP POST to api endpoint /api/blogs', () => {
   test('Adds new blog correctly to database', async () => {
     const newBlog = {
       title: 'MongoDB is for storing data',
@@ -87,6 +87,20 @@ describe('POST to api endpoint /api/blogs', () => {
     
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+})
+
+describe('HTTP DELETE to api endpoint /api/blogs/:id', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
   })
 })
 
