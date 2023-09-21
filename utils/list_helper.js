@@ -40,15 +40,15 @@ const mostLikes = (blogs) => {
   const authorsGrouped = lodash.groupBy(blogs, 'author')
   const keys = Object.keys(authorsGrouped)
 
-  const mostLikesarr = keys.map(key => 
+  const mostLikesArr = keys.map(key => 
     lodash.sumBy(authorsGrouped[key], 'likes')
   )
 
-  const mostLikesIdx = mostLikesarr.indexOf(Math.max(...mostLikesarr))
+  const mostLikesIdx = mostLikesArr.indexOf(Math.max(...mostLikesArr))
 
   return {
     author: keys[mostLikesIdx],
-    likes: mostLikesarr[mostLikesIdx],
+    likes: mostLikesArr[mostLikesIdx],
   }
 }
 
