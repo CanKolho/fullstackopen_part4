@@ -1,4 +1,4 @@
-//These constants are used in .test.js files
+//These constants are used in list_helper.test.js files
 
 const listWithOneBlog = [
   {
