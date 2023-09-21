@@ -104,6 +104,22 @@ describe('HTTP DELETE to api endpoint /api/blogs/:id', () => {
   })
 })
 
+describe('HTTP PUT to api endpoint /api/blogs/:id', () => {
+  test('succeeds with status code 200 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: 1000 })
+      .expect(200)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+    expect(blogsAtEnd[0].likes).toBe(1000)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

@@ -47,3 +47,11 @@ Content-Type: application/json
   "url": "www.sql.com",
   "likes": 5000
 }
+
+###
+PUT http://localhost:3001/api/blogs/6509a7209277c4c8e4227cfa
+Content-Type: application/json
+
+{
+  "likes": 10000
+}
