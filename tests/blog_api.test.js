@@ -73,6 +73,21 @@ describe('POST to api endpoint /api/blogs', () => {
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
   })
+
+  test('response status 400, if properties "title" or "url" are missing', async () => {
+    const newBlog = {
+      author: 'bad request',
+      likes: 400
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
 afterAll(async () => {
