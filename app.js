@@ -11,6 +11,7 @@ const middleware = require('./utils/middleware.js')
 const app = express()
 
 mongoose.set('strictQuery', false)
+mongoose.set('strictPopulate', false)
 
 logger.info('connecting to', config.MONGODB_URI)
 
