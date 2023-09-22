@@ -1,3 +1,6 @@
+GET http://localhost:3001/api/users
+
+### SEND VALID DATA 
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
@@ -5,4 +8,42 @@ Content-Type: application/json
   "username": "Node man",
   "name": "jason",
   "password": "secret"
+}
+
+### TRIES TO SEND DATA WITH SAME USERNAME
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "Node man",
+  "name": "jason",
+  "password": "secret"
+}
+
+### SEND DATA WITH SHORT PASSWORD
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "Node man",
+  "name": "jason",
+  "password": "se"
+}
+
+### IS MISSING USERNAME
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "jason",
+  "password": "sec"
+}
+
+### IS MISSING PASSWORD
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "reactman",
+  "name": "jason"
 }
