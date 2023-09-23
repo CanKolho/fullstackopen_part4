@@ -55,3 +55,16 @@ Content-Type: application/json
 {
   "likes": 10000
 }
+
+###
+
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5vZGUgbWFuIiwiaWQiOiI2NTBlYzdlOWM1Zjc2NzAwMzA1NGM0YWEiLCJpYXQiOjE2OTU0Njc1MTd9.GaFxRuTYgmRlBJfQsthbRXKpvQNBKe2ntqDandk4A68
+
+{
+  "title": "SQL blog",
+  "author": "Database management" ,
+  "url": "www.sql.com",
+  "likes": 5000
+}
