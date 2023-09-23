@@ -1,10 +1,14 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const bcrypt = require("bcryptjs");
+const config = require('../utils/config.js')
 const helper = require('./test_helper.js')
 const app = require('../app.js')
 const api = supertest(app)
 
 const Blog = require('../models/blog.js')
+const User = require('../models/user.js')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -35,7 +39,29 @@ describe('HTTP GET to api endpoint /api/blogs', () => {
 })
   
 describe('HTTP POST to api endpoint /api/blogs', () => {
-  test('Adds new blog correctly to database', async () => {
+  let token = null
+
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const hash = await bcrypt.hash('secret', 10)
+    const user = new User({
+      username: 'node man',
+      name: 'jason',
+      passwordHash: hash,
+    })
+
+    await user.save()
+
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+  
+    token = jwt.sign(userForToken, config.SECRET)
+  })
+
+  test('new blog added correctly to database by authorized user', async () => {
     const newBlog = {
       title: 'MongoDB is for storing data',
       author: 'db management',
@@ -45,6 +71,7 @@ describe('HTTP POST to api endpoint /api/blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -56,6 +83,25 @@ describe('HTTP POST to api endpoint /api/blogs', () => {
     expect(titles).toContain('MongoDB is for storing data')
   })
 
+  test('unauthorized user can not create a blog', async () => {
+    const newBlog = {
+      title: 'sql is fun',
+      author: 'db management',
+      url: 'www.sql.com',
+      likes: 101
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
+
   test('if "likes" property is missing, it is set to 0 by default', async () => {
     const newBlog = {
       title: 'Likes are important',
@@ -65,6 +111,7 @@ describe('HTTP POST to api endpoint /api/blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -82,6 +129,7 @@ describe('HTTP POST to api endpoint /api/blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
     
@@ -91,16 +139,54 @@ describe('HTTP POST to api endpoint /api/blogs', () => {
 })
 
 describe('HTTP DELETE to api endpoint /api/blogs/:id', () => {
+  let token = null
+
+  beforeEach(async () => {
+    await User.deleteMany({})
+    await Blog.deleteMany({})
+
+    const hash = await bcrypt.hash('secret', 10)
+    const user = new User({
+      username: 'node man',
+      name: 'jason',
+      passwordHash: hash,
+    })
+
+    await user.save()
+
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+  
+    token = jwt.sign(userForToken, config.SECRET)
+
+    const newBlog = {
+      title: 'tests are fun',
+      author: 'QA',
+      url: 'www.test.com',
+      likes: 1
+    }
+
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/)
+  })
+  
   test('succeeds with status code 204 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
+    const blogsAtStart = await Blog.find({})
     const blogToDelete = blogsAtStart[0]
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", `Bearer ${token}`)
       .expect(204)
     
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1)
   })
 })
 
