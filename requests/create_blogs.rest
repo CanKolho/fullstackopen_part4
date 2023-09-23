@@ -36,7 +36,7 @@ Content-Type: application/json
 
 POST  http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5vZGUgbWFuIiwiaWQiOiI2NTBlZDQ0OTgxOTVhYjdmZDQ3MjVkNWYiLCJpYXQiOjE2OTU0NzA2NzV9.HF5VGeBnLVaxQL7akSKbW9iQYcCaXppytirrSsHdKG8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5vZGUgbWFuIiwiaWQiOiI2NTBlZDlmMmE2ZDAzNTc4NjM2YmJiYzMiLCJpYXQiOjE2OTU0NzIxMzB9.UeYo3DuSBU-i4asSGY56h3nOAD3BlDW_ptk5J99TieA
 
 {
   "title": "SQL blog",
