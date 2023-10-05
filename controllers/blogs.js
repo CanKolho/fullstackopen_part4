@@ -64,7 +64,7 @@ blogRouter.put('/:id', async (request, response) => {
 
   response
     .status(200)
-    .json(updatedBlog)
+    .json(await updatedBlog.populate('user', { username: 1, name: 1 }))
 })
 
 module.exports = blogRouter

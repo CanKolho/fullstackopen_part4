@@ -5,8 +5,8 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "Node man",
-  "name": "jason",
+  "username": "student",
+  "name": "stud",
   "password": "secret"
 }
 
